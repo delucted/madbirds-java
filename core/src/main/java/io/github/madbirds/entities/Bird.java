@@ -1,4 +1,4 @@
-package io.github.madbirds.bird;
+package io.github.madbirds.entities;
 import com.badlogic.gdx.graphics.Color;
 
 public class Bird {
@@ -8,9 +8,5 @@ public class Bird {
     public Bird(int radius, Color color) {
         this.radius = radius;
         this.color = color;
-    }
-
-    public applyVelocity() {
-        
     }
 }

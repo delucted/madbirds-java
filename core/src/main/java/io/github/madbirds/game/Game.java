@@ -1,7 +1,7 @@
 package io.github.madbirds.game;
 
 import com.badlogic.gdx.utils.ScreenUtils;
-import io.github.madbirds.bird.Bird;
+import io.github.madbirds.entities.Bird;
 
 import java.util.ArrayDeque;
 import java.util.List;
