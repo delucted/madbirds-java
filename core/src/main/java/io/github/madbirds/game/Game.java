@@ -1,13 +1,16 @@
 package io.github.madbirds.game;
 
 import com.badlogic.gdx.utils.ScreenUtils;
+import io.github.madbirds.bird.Bird;
+
+import java.util.ArrayDeque;
+import java.util.List;
 
 public class Game {
-    private final int BIRD_COUNT = 3;
     public static final float STEP_DELTA = 1f / 120;
 
     private int score;
-    private int birdsLeft;
+    private ArrayDeque<Bird> birds;
 
     public void create() {
 
@@ -15,7 +18,10 @@ public class Game {
 
     public Game() {
         score = 0;
-        birdsLeft = BIRD_COUNT;
+    }
+
+    public Game(List<Bird> birds) {
+        this.birds = new ArrayDeque<>(birds);
     }
 
     public void step() {
@@ -38,8 +44,11 @@ public class Game {
         score += n;
     }
 
-    public int useBird() {
-        birdsLeft -= 0;
-        return birdsLeft;
+    public Bird getBird() {
+        if (birds.isEmpty()) {
+            throw new OutOfBirdsException("Player is out of birds.");
+        }
+
+        return birds.removeFirst();
     }
 }
