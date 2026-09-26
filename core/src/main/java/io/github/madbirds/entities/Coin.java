@@ -10,4 +10,8 @@ public class Coin {
     public Coin(CoinType type) {
         this.type = type;
     }
+
+    public CoinType getType() {
+        return type;
+    }
 }

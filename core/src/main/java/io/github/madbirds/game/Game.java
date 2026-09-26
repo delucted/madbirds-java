@@ -2,6 +2,8 @@ package io.github.madbirds.game;
 
 import com.badlogic.gdx.utils.ScreenUtils;
 import io.github.madbirds.entities.Bird;
+import io.github.madbirds.entities.Coin;
+import io.github.madbirds.entities.CoinType;
 
 import java.util.ArrayDeque;
 import java.util.List;
@@ -40,8 +42,13 @@ public class Game {
 
     }
 
-    public void incScore(int n) {
+    private void incScore(int n) {
         score += n;
+    }
+
+    public void consumeCoin(Coin coin) {
+        int coinValue = coin.getType() == CoinType.NORMAL ? 50 : 100;
+        incScore(coinValue);
     }
 
     public Bird getBird() {
