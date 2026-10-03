@@ -14,4 +14,10 @@ public class Level {
     public ArrayList<Entity> getEntities() {
         return this.entities;
     }
+
+    public void renderAllEntities() {
+        for (Entity tit : entities) {  // tit is short for Entity
+            tit.render();
+        }
+    }
 }
