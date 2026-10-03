@@ -1,23 +1,33 @@
 package io.github.madbirds.entities;
 
-import io.github.madbirds.entities.entity.Entity;
+import io.github.madbirds.entities.creature.bird.Bird;
+import io.github.madbirds.tools.Callable;
 
 import java.util.ArrayList;
 
-public class Level {
-    private final ArrayList<Entity> entities;
+public class Level implements Callable {
+    private ArrayList<Bird> birds;
 
-    Level(ArrayList<Entity> entities) {
-        this.entities = entities;
+    Level(ArrayList<Bird> birds) {
+
     }
 
-    public ArrayList<Entity> getEntities() {
-        return this.entities;
+    @Override
+    public void step() {
+
     }
 
-    public void renderAllEntities() {
-        for (Entity tit : entities) {  // tit is short for Entity
-            tit.render();
-        }
+    @Override
+    public void update() {
+
+    }
+
+    @Override
+    public void render() {
+
+    }
+
+    public ArrayList<Bird> getBirds() {
+        return birds;
     }
 }
