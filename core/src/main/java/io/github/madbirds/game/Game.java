@@ -1,7 +1,6 @@
 package io.github.madbirds.game;
 
 import com.badlogic.gdx.utils.ScreenUtils;
-import io.github.madbirds.entities.Bird;
 import io.github.madbirds.entities.Coin;
 import io.github.madbirds.entities.CoinType;
 
@@ -12,7 +11,7 @@ public class Game {
     public static final float STEP_DELTA = 1f / 120;
 
     private int score;
-    private ArrayDeque<Bird> birds;
+//    private ArrayDeque<Bird> birds;
 
     public void create() {
 
@@ -22,9 +21,9 @@ public class Game {
         score = 0;
     }
 
-    public Game(List<Bird> birds) {
-        this.birds = new ArrayDeque<>(birds);
-    }
+//    public Game(List<Bird> birds) {
+//        this.birds = new ArrayDeque<>(birds);
+//    }
 
     public void step() {
 
@@ -51,11 +50,11 @@ public class Game {
         incScore(coinValue);
     }
 
-    public Bird getBird() {
-        if (birds.isEmpty()) {
-            throw new OutOfBirdsException("Player is out of birds.");
-        }
-
-        return birds.removeFirst();
-    }
+//    public Bird getBird() {
+//        if (birds.isEmpty()) {
+//            throw new OutOfBirdsException("Player is out of birds.");
+//        }
+//
+//        return birds.removeFirst();
+//    }
 }
