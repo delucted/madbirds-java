@@ -1,5 +1,7 @@
 package io.github.madbirds.entities;
 
+import io.github.madbirds.entities.entity.Entity;
+
 public class Block extends Entity {
     private int width;
     private int height;

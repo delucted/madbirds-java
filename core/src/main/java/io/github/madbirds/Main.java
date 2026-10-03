@@ -1,32 +1,35 @@
 package io.github.madbirds;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.Gdx;
+import io.github.madbirds.game.Game;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
-    private SpriteBatch batch;
-    private Texture image;
+    private final Game game = new Game();
+    private float accumulation = 0f;
 
     @Override
     public void create() {
-        batch = new SpriteBatch();
-        image = new Texture("libgdx.png");
+        game.create();
     }
 
     @Override
     public void render() {
-        ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-        batch.begin();
-        batch.draw(image, 140, 210);
-        batch.end();
+        float delta = Gdx.graphics.getDeltaTime();
+        accumulation = Math.min(accumulation + delta, 0.2f);
+
+        while (accumulation >= Game.STEP_DELTA) {
+            accumulation -= Game.STEP_DELTA;
+            game.step();
+        }
+        game.update();
+
+        game.render();
     }
 
     @Override
     public void dispose() {
-        batch.dispose();
-        image.dispose();
+        game.dispose();
     }
 }

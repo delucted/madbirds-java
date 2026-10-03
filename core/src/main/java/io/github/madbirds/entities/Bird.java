@@ -1,5 +1,6 @@
 package io.github.madbirds.entities;
 import com.badlogic.gdx.graphics.Color;
+import io.github.madbirds.entities.entity.Entity;
 
 public class Bird extends Entity {
     private final double radius;
