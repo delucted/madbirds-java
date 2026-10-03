@@ -1,5 +1,6 @@
 package io.github.madbirds.entities.creature.bird;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -13,15 +14,16 @@ public class Bird extends InterpolatedBody implements Callable {
     private final BirdRendering rendering = new BirdRendering();
     private final BirdType type;
 
-    public Bird(BirdType type) {
-        super(createBody(type));
+    public Bird(BirdType type, Vector2 position) {
+        super(createBody(type, position));
         this.type = type;
     }
 
-    private static Body createBody(BirdType type) {
+    private static Body createBody(BirdType type, Vector2 position) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.bullet = true;
+        bodyDef.position.set(position);
         Body body = Physics.getWorld().createBody(bodyDef);
 
         CircleShape shape = new CircleShape();

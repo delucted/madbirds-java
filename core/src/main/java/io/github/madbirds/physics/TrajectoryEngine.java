@@ -116,32 +116,44 @@ public class TrajectoryEngine {
     }
 
     /**
-     * Approximates sweeping the bird's circle along {@code direction}: a centre ray that reaches
-     * one radius ahead (for the leading edge) plus two rays offset sideways by the radius
-     * (for grazing hits). Returns how far the centre can travel before the bird touches
-     * something, or infinity if nothing was hit.
+     * Approximates sweeping the bird's circle along {@code direction} by casting three rays:
+     * through the centre and offset sideways by the radius (to catch grazing hits). Each hit
+     * gives a surface plane, and we solve for when the centre is exactly one radius from it,
+     * which is exact for flat surfaces. Returns how far the centre can travel before the bird
+     * touches something, or infinity if nothing was hit.
      */
     private float castSegment(World world, Body ignore, Vector2 from, float radius, float length) {
-        float reach = length + radius;
-        float travel = castRay(world, ignore, from, rayEnd.set(from).mulAdd(direction, reach)) * reach - radius;
+        // Look ahead past the step so surfaces the bird's edge reaches before its centre are found
+        float reach = length + 2f * radius;
+        float travel = castRay(world, ignore, from, from, radius, reach);
 
         if (radius > 0f) {
             offset.set(direction).rotate90(1).scl(radius);
             for (int side = -1; side <= 1; side += 2) {
                 rayStart.set(from).mulAdd(offset, side);
-                rayEnd.set(rayStart).mulAdd(direction, length);
-                travel = Math.min(travel, castRay(world, ignore, rayStart, rayEnd) * length);
+                travel = Math.min(travel, castRay(world, ignore, rayStart, from, radius, reach));
             }
         }
 
         return travel;
     }
 
-    /** Returns the fraction along the ray of the closest solid hit, or infinity if nothing was hit. */
-    private float castRay(World world, Body ignore, Vector2 from, Vector2 to) {
+    /**
+     * Casts a ray from {@code rayFrom} along {@code direction} and returns how far the circle centred
+     * at {@code centre} can move along {@code direction} before touching the surface the ray hit,
+     * or infinity if nothing was hit.
+     */
+    private float castRay(World world, Body ignore, Vector2 rayFrom, Vector2 centre, float radius, float reach) {
         rayCallback.reset(ignore);
-        world.rayCast(rayCallback, from, to);
-        return rayCallback.hit ? rayCallback.closest : Float.POSITIVE_INFINITY;
+        world.rayCast(rayCallback, rayFrom, rayEnd.set(rayFrom).mulAdd(direction, reach));
+        if (!rayCallback.hit) return Float.POSITIVE_INFINITY;
+
+        Vector2 n = rayCallback.normal;
+        float approachSpeed = -direction.dot(n);
+        if (approachSpeed <= 0f) return Float.POSITIVE_INFINITY; // moving away from this surface
+
+        float distanceToPlane = (centre.x - rayCallback.point.x) * n.x + (centre.y - rayCallback.point.y) * n.y;
+        return (distanceToPlane - radius) / approachSpeed;
     }
 
     /**
@@ -196,6 +208,8 @@ public class TrajectoryEngine {
         private Body ignore;
         float closest;
         boolean hit;
+        final Vector2 point = new Vector2();
+        final Vector2 normal = new Vector2();
 
         void reset(Body ignore) {
             this.ignore = ignore;
@@ -211,6 +225,9 @@ public class TrajectoryEngine {
             if (fraction < closest) {
                 closest = fraction;
                 hit = true;
+                // libGDX reuses these vectors between callbacks, so copy them
+                this.point.set(point);
+                this.normal.set(normal);
             }
             return fraction; // clip the ray so only closer hits are reported
         }
