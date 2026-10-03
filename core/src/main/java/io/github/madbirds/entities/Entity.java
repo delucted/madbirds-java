@@ -1,5 +1,5 @@
 package io.github.madbirds.entities;
 
-public enum CoinType {
-    SILVER, GOLD
+public class Entity {
+
 }

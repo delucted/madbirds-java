@@ -1,7 +1,7 @@
 package io.github.madbirds.entities;
 import com.badlogic.gdx.graphics.Color;
 
-public class Bird {
+public class Bird extends Entity {
     private final double radius;
     private final Color color;
 

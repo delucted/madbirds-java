@@ -47,7 +47,7 @@ public class Game {
     }
 
     public void consumeCoin(Coin coin) {
-        int coinValue = coin.getType() == CoinType.NORMAL ? 50 : 100;
+        int coinValue = coin.getType() == CoinType.SILVER ? 50 : 100;
         incScore(coinValue);
     }
 
