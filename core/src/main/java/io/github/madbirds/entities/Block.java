@@ -1,10 +1,12 @@
 package io.github.madbirds.entities;
 
 public class Block extends Entity {
+    private BlockType type;
     private int width;
     private int height;
 
-    public Block(int width, int height) {
+    public Block(BlockType type, int width, int height) {
+        this.type = type;
         this.width = width;
         this.height = height;
     }
