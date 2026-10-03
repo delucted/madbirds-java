@@ -1,1 +1,9 @@
 libgdx.png
+sfx/coin_collect.mp3
+sfx/impact_flesh.mp3
+sfx/impact_glass.mp3
+sfx/impact_wood.mp3
+sfx/pullback.mp3
+textures/blue.png
+textures/cow.png
+textures/red.png

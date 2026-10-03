@@ -1,44 +1,43 @@
-package io.github.madbirds.entities;
+package io.github.madbirds.entities.creature.bird;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import io.github.madbirds.entities.BirdType;
 import io.github.madbirds.state.Physics;
 import io.github.madbirds.tools.Callable;
 import io.github.madbirds.tools.InterpolatedBody;
 
-public class Coin extends InterpolatedBody {
-    public static final float RADIUS = 0.6f;
-    public static final float DENSITY = 0.1f;
+public class Bird extends InterpolatedBody implements Callable {
+    private final BirdRendering rendering = new BirdRendering();
+    private final BirdType type;
 
-    private final CoinType type;
-
-    public Coin(CoinType type) {
+    public Bird(BirdType type) {
         super(createBody(type));
         this.type = type;
     }
 
-    private static Body createBody(CoinType type) {
+    private static Body createBody(BirdType type) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.bullet = true;
         Body body = Physics.getWorld().createBody(bodyDef);
 
         CircleShape shape = new CircleShape();
-        shape.setRadius(RADIUS);
+        shape.setRadius(type.getRadius());
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = DENSITY;
-        fixtureDef.friction = 0.8f;
-        fixtureDef.restitution = 0f;
+        fixtureDef.density = type.getDensity();
+        fixtureDef.friction = 0.9f;
+        fixtureDef.restitution = 0.06f;
 
         body.createFixture(fixtureDef);
         return body;
     }
 
-    public CoinType getType() {
+    public BirdType getType() {
         return type;
     }
 }
